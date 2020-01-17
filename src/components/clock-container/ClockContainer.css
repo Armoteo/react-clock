@@ -1,0 +1,9 @@
+.ClockContainer {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid red;
+}
+
+/*# sourceMappingURL=ClockContainer.css.map */
