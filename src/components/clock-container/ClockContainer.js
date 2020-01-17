@@ -28,13 +28,14 @@ class ClockContainer extends Component {
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
+
     //time update
     getTime() {
         const time = new Date();
         //set time hours, minutes and second
-        const hours = time.getHours();
-        const minutes = time.getMinutes();
-        const seconds = time.getSeconds();
+        let hours = this.checkNumber(time.getHours());
+        let minutes = this.checkNumber(time.getMinutes());
+        let seconds = this.checkNumber(time.getSeconds());
         const noonState = hours <= 12 ? 'AM' : 'PM';
         const timeNew = {hours, minutes, seconds, noonState};
         this.setState({
@@ -55,25 +56,62 @@ class ClockContainer extends Component {
     //toggleCount
     toggleCount = () => {
         let countClick = this.state.countClick;
-        if (countClick === 0) {
+        this.toggleBackground();
+        if (countClick === 0 || countClick < 3) {
             this.setState({countClick: countClick + 1})
         } else {
-            this.setState({countClick: countClick - 1});
+            this.setState({countClick: 0});
         }
     };
+    toggleBackground = ()=>{
+        let rand = Math.round(1 - 0.5 + Math.random() * (7 - 3 + 1));
+        const color = ['#d3d896', '#36274c', '#990549', '#d41888', '#0096a7', '#1f693d', '#fe5923'];
+        const divContainer = document.querySelector('.ClockContainer');
+        divContainer.style.backgroundColor = color[rand];
+    };
+
     //view our clock or date
     renderTable = () => {
         switch (this.state.countClick) {
             case 0:
                 return <BoxTime time={this.state.timeNew}/>;
             case 1:
-                return (
-                    <div>
-                        <BoxDay date={this.state.date}/>
-                    </div>
-                );
+                return <BoxDay date={this.createDate()}/>;
+            case 2:
+                return <BoxDay date={this.createDate()}/>;
+            case 3:
+                return <BoxTime time={this.state.timeNew} id={0}/>;
             default:
                 return null;
+        }
+    };
+
+    createDate = () => {
+        if (this.state.countClick === 1) {
+            let day= this.checkNumber(this.state.date.day);
+            let month= this.checkNumber(this.state.date.month);
+            let year= this.checkNumber(this.state.date.year);
+            return `${day}/${month}/${year}`;
+        }else {
+            return this.forDate();
+        }
+    };
+
+    forDate=()=>{
+        const monthsArr = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        let day= this.state.date.day;
+        let month= this.state.date.month;
+        let year= this.state.date.year;
+        let dataNew = `${monthsArr[month]}\n ${day}th ${year}`;
+        return dataNew;
+    };
+
+    checkNumber=(number)=>{
+        if (number < 10) {
+            return `0${number}`;
+        } else {
+           return `${number}`;
         }
     };
 
@@ -87,5 +125,3 @@ class ClockContainer extends Component {
 }
 
 export default ClockContainer;
-
-/*4 типа - просто время с секундами, полная дата , дата с стринг месяцем и время без секунд*/

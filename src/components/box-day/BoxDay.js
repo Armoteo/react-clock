@@ -1,13 +1,11 @@
 import React from 'react';
+import './BoxDay.scss'
 
 
-
- const BoxDay =(props)=>{
-
-     const {day, month, year} = props.date;
-    return(
-        <div>
-            {day}/{month}/{year}
+const BoxDay = (props) => {
+    return (
+        <div className='BoxDay'>
+            {props.date}
         </div>
     )
 };

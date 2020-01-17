@@ -4,7 +4,7 @@ import './BoxTime.scss';
 const BoxTime = (props) => {
     return (
         <div className='BoxTime'>
-            {props.time.hours}: {props.time.minutes}: {props.time.seconds}  {props.time.noonState}
+            {props.time.hours}:{props.time.minutes} {props.id ===0 ? ":" + props.time.seconds:null} {props.time.noonState}
         </div>
     )
 };
